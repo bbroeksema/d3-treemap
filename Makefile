@@ -3,6 +3,7 @@ all: d3.treemap.js
 TARGETS= \
 	start.js \
 	rect.js \
+	chunk.js \
 	layout.js \
 	end.js
 
