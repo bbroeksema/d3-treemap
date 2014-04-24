@@ -3,7 +3,7 @@ all: d3.treemap.js
 TARGETS= \
 	start.js \
 	layout.js \
-	end.js \
+	end.js
 
 d3.treemap.js: $(addprefix src/, $(TARGETS))
 	cat $^ >$@
