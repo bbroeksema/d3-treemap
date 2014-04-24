@@ -1,6 +1,6 @@
 # Generic Treemap layout algorithm
 
-This is a generic layout algorithm for treemaps, or more general spacefilling rectangular layouts.
+This is a generic layout algorithm for treemaps, or more generally: space-filling rectangular layouts.
 It is a JavaScript implementation of the algorithm described [this](http://research.broeksemaatjes.nl/publications/2012-capturing-design-space-sequential-space-filling-layouts.pdf) paper.
 
 See [here]() for an interactive
