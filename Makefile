@@ -9,7 +9,7 @@ TARGETS= \
 	end.js
 
 d3.treemap.js: $(addprefix src/, $(TARGETS))
-	cat $^ >$@
+	cat $^ > $@
 
 %.min.js: %.js
 	uglifyjs -o $@ $<
