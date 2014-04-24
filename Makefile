@@ -4,6 +4,7 @@ TARGETS= \
 	start.js \
 	rect.js \
 	chunk.js \
+	phrase.js \
 	layout.js \
 	end.js
 
