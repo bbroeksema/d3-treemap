@@ -20,8 +20,8 @@
     };
 
     rect.height = function(_) {
-      if (!arguments.length) return width;
-      width = _;
+      if (!arguments.length) return height;
+      height = _;
       return rect;
     };
 
