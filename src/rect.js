@@ -1,6 +1,10 @@
   function d3_treemap_rect(x, y, width, height) {
     var rect = {};
 
+    rect.clone = function() {
+      return d3_treemap_rect(x, y, width, height);
+    }
+
     rect.x = function(_) {
       if (!arguments.length) return x;
       x = _;
