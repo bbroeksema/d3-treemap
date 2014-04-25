@@ -10,34 +10,52 @@
     return sum;
   }
 
-  function reduce(availableSpace, currentChunk, N) {
-    switch(currentChunk.phrase()) {
+  // This function decreases the available space rect and increases the chunk's
+  // rect. Both the increase and decrease are based on the ratio of item weights
+  // in the current chunk and the overall weight N that needs to be laid out.
+  //
+  // A chunk, by design, takes either full with or full height of the available
+  // space. As a result, based on the side the chunk is place (one of LEFT, RIGHT,
+  // TOP, BOTTOM), the chunk will grow into the availableSpace:
+  //
+  // In case the chunk is placed:
+  // LEFT  : It takes full height and grows to the left when items are added.
+  // RIGHT : It takes full height and grows to the right when items are added.
+  // TOP   : It takes full width and grows downwards when items are added.
+  // BOTTOM: It takes full widht and grows upwards when items are added.
+  function updateAreas(availableSpace, chunk, N) {
+    var factor = chunk.sum() / N;
+
+    switch(chunk.phrase()) {
       case d3.layout.phrase.LEFT_TOP_TO_BOTTOM:
       case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:
       case d3.layout.phrase.LEFT_LEFT_TO_RIGHT:
       case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:
-        return availableSpace.x(availableSpace.x() + availableSpace.width() * (currentChunk.sum() / N));
-
+        availableSpace
+          .x(availableSpace.x() + availableSpace.width() * factor)
+          .width(availableSpace.width() - availableSpace.width() * factor);
+        break;
       case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT:
       case d3.layout.phrase.BOTTOM_RIGHT_TO_LEFT:
       case d3.layout.phrase.BOTTOM_BOTTOM_TO_TOP:
       case d3.layout.phrase.BOTTOM_TOP_TO_BOTTOM:
-        return availableSpace.y(availableSpace.y() + availableSpace.heigth() * (currentChunk.sum() / N));
-
+        availableSpace.y(availableSpace.y() + availableSpace.heigth() * factor);
+        break;
       case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
       case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
       case d3.layout.phrase.RIGHT_RIGHT_TO_LEFT:
       case d3.layout.phrase.RIGHT_LEFT_TO_RIGHT:
-        return availableSpace.width(availableSpace.width() - availableSpace.width() * (currentChunk.sum() / N));
-
+        availableSpace.width(availableSpace.width() - availableSpace.width() * factor);
+        break;
       case d3.layout.phrase.TOP_RIGHT_TO_LEFT:
       case d3.layout.phrase.TOP_LEFT_TO_RIGHT:
       case d3.layout.phrase.TOP_TOP_TO_BOTTOM:
       case d3.layout.phrase.TOP_BOTTOM_TO_TOP:
-        return availableSpace
-          .y(availableSpace.y() + availableSpace.height() * (currentChunk.sum() / N))
-          .height(availableSpace.height() - availableSpace.height() * (currentChunk.sum() / N));
-
+        chunk.rect().height(availableSpace.height() * factor);
+        availableSpace
+          .y(availableSpace.y() + availableSpace.height() * factor)
+          .height(availableSpace.height() - availableSpace.height() * factor);
+        break;
       default:
         throw("Invalid phrase");
     };
@@ -59,8 +77,9 @@
           curScore = this.score(currentChunk, itemSize);
 
       if (curScore < prevScore) {
-        availableSpace = reduce(availableSpace, currentChunk, remainingSum);
-        // TODO: grow the chunks height or with based on the items in it.
+        updateAreas(availableSpace, currentChunk, remainingSum);
+        remainingSum -= currentChunk.sum();
+
         if (this.recurse(currentChunk)) {
           var recursiveChunks = layout(T, currentFrom, to);
 
@@ -79,6 +98,8 @@
       }
       currentChunk.push(itemSize);
     }
+    updateAreas(availableSpace, currentChunk, remainingSum);
+    remainingSum -= currentChunk.sum();
 
     if (currentFrom != from && this.recurse(currentChunk)) {
       var recursiveChunks = layout(T, currentFrom, to);
