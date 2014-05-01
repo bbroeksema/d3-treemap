@@ -1,0 +1,26 @@
+{
+  "private": true,
+
+  "name": "d3-treemap",
+  "version": "0.0.1",
+  "description": "A small, free d3 extension for generating a wide variety of treemap layouts.",
+  "keywords": ["treemap, layout, visualization, d3"],
+  "homepage": "https://github.com/bbroeksema/d3-treemap/wiki",
+  "bugs": {
+    "url": "https://github.com/bbroeksema/d3-treemap/issues",
+    "email": "dev@broeksemaatjes.nl"
+  },
+  "author": {
+    "name" : "Bertjan Broeksema",
+    "email" : "dev@broeksemaatjes.nl"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/bbroeksema/d3-treemap.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "d3": "~3.4.6"
+  },
+  "devDependencies": {}
+}
