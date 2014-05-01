@@ -1,4 +1,10 @@
-all: d3.treemap.js
+GENERATED_FILES = \
+	d3.treemap.js \
+	d3.treemap.min.js
+
+UGGLIFY = node_modules/uglify-js/bin/uglifyjs
+
+all: ${GENERATED_FILES}
 
 TARGETS= \
 	start.js \
@@ -11,11 +17,12 @@ TARGETS= \
 d3.treemap.js: $(addprefix src/, $(TARGETS))
 	cat $^ > $@
 
-%.min.js: %.js
-	uglifyjs -o $@ $<
+d3.treemap.min.js: d3.treemap.js ${UGGLIFY}
+	${UGGLIFY} -o $@ $<
 	echo >> $@
 
 clean:
-	rm -f d3.treemap.js
+	rm -f ${GENERATED_FILES}
+
 
 .PHONY: clean
