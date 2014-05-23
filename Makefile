@@ -12,6 +12,7 @@ TARGETS= \
 	chunk.js \
 	phrase.js \
 	layout.js \
+	configurations.js \
 	end.js
 
 d3.treemap.js: $(addprefix src/, $(TARGETS))

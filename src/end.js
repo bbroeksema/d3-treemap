@@ -86,4 +86,5 @@
     return _layout;
   }
 
+  d3.treemap.configurations = configurations;
 })();
