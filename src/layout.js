@@ -24,37 +24,49 @@
   // TOP   : It takes full width and grows downwards when items are added.
   // BOTTOM: It takes full widht and grows upwards when items are added.
   function updateAreas(availableSpace, chunk, N) {
-    var factor = chunk.sum() / N;
+    var factor = chunk.sum() / N,
+        widhtOrHeight;
 
     switch(chunk.phrase()) {
       case d3.layout.phrase.LEFT_TOP_TO_BOTTOM:
       case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:
       case d3.layout.phrase.LEFT_LEFT_TO_RIGHT:
       case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:
+        widhtOrHeight = availableSpace.width() * factor;
+        chunk.rect().width(widhtOrHeight);
         availableSpace
-          .x(availableSpace.x() + availableSpace.width() * factor)
-          .width(availableSpace.width() - availableSpace.width() * factor);
+          .x(availableSpace.x() + widhtOrHeight)
+          .width(availableSpace.width() - widhtOrHeight);
         break;
       case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT:
       case d3.layout.phrase.BOTTOM_RIGHT_TO_LEFT:
       case d3.layout.phrase.BOTTOM_BOTTOM_TO_TOP:
       case d3.layout.phrase.BOTTOM_TOP_TO_BOTTOM:
-        availableSpace.y(availableSpace.y() + availableSpace.heigth() * factor);
+        widhtOrHeight = availableSpace.height() * factor;
+        chunk.rect()
+          .height(widhtOrHeight)
+          .y(chunk.rect().y() - widhtOrHeight);
+        availableSpace.height(availableSpace.height() - widhtOrHeight);
         break;
       case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
       case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
       case d3.layout.phrase.RIGHT_RIGHT_TO_LEFT:
       case d3.layout.phrase.RIGHT_LEFT_TO_RIGHT:
-        availableSpace.width(availableSpace.width() - availableSpace.width() * factor);
+        widhtOrHeight = availableSpace.width() * factor;
+        chunk.rect()
+          .width(widhtOrHeight)
+          .x(availableSpace.width() - widhtOrHeight);
+        availableSpace.width(availableSpace.width() - widhtOrHeight);
         break;
       case d3.layout.phrase.TOP_RIGHT_TO_LEFT:
       case d3.layout.phrase.TOP_LEFT_TO_RIGHT:
       case d3.layout.phrase.TOP_TOP_TO_BOTTOM:
       case d3.layout.phrase.TOP_BOTTOM_TO_TOP:
-        chunk.rect().height(availableSpace.height() * factor);
+        widhtOrHeight = availableSpace.height() * factor;
+        chunk.rect().height(widhtOrHeight);
         availableSpace
-          .y(availableSpace.y() + availableSpace.height() * factor)
-          .height(availableSpace.height() - availableSpace.height() * factor);
+          .y(availableSpace.y() + widhtOrHeight)
+          .height(availableSpace.height() - widhtOrHeight);
         break;
       default:
         throw("Invalid phrase");
