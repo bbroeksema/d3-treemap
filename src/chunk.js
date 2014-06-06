@@ -59,31 +59,116 @@
     chunk.items = [];
 
     function calculateItemRect(item, rect) {
-      var x, y, w, h;
+      var x, y, w, h,
+          factor = item / chunk.sum();
 
       switch(phrase) {
+        case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT:
         case d3.layout.phrase.TOP_LEFT_TO_RIGHT:
           x = rect.x();
           y = rect.y();
-          w = chunk.rect().width() * item / chunk.sum();
+          w = chunk.rect().width() * factor;
           h = chunk.rect().height();
           return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.LEFT_TOP_TO_BOTTOM:
+          x = rect.x();
+          y = rect.y();
+          w = chunk.rect().width();
+          h = chunk.rect().height() * factor;
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:
+          h = chunk.rect().height() * factor;
+          x = rect.x();
+          y = rect.height() - h;
+          w = chunk.rect().width();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.LEFT_LEFT_TO_RIGHT:
+          x = rect.x();
+          y = rect.y();
+          w = chunk.rect().width() * factor;
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:
+          w = chunk.rect().width() * factor;
+          x = rect.x() + rect.width() - w;
+          y = rect.y();
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
+          h = chunk.rect().height() * factor;
+          w = chunk.rect().width();
+          x = rect.x() - w;
+          y = rect.height() - h;
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
+          w = chunk.rect().width();
+          x = rect.x() - w;
+          y = rect.y();
+          h = chunk.rect().height() * factor;
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.RIGHT_RIGHT_TO_LEFT:
+          w = chunk.rect().width() * factor;
+          x = rect.x() + rect.width() - w;
+          y = rect.y();
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.RIGHT_LEFT_TO_RIGHT:
-        case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT:
+          x = rect.x();
+          y = rect.y();
+          w = chunk.rect().width() * factor;
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.BOTTOM_RIGHT_TO_LEFT:
+          w = chunk.rect().width() * factor;
+          x = rect.x() + rect.width() - w;
+          y = rect.y();
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.BOTTOM_BOTTOM_TO_TOP:
+          h = chunk.rect().height() * factor;
+          x = rect.x();
+          y = rect.y() + rect.height() - h;
+          w = chunk.rect().width();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.BOTTOM_TOP_TO_BOTTOM:
+          x = rect.x();
+          y = rect.y();
+          w = chunk.rect().width();
+          h = chunk.rect().height() * factor;
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.TOP_RIGHT_TO_LEFT:
+          w = chunk.rect().width() * factor;
+          x = rect.width() - w;
+          y = rect.y();
+          h = chunk.rect().height();
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.TOP_TOP_TO_BOTTOM:
+          x = rect.x();
+          y = rect.y();
+          w = chunk.rect().width();
+          h = chunk.rect().height() * factor;
+          return d3_treemap_rect(x, y, w, h);
+
         case d3.layout.phrase.TOP_BOTTOM_TO_TOP:
-          return d3_treemap_rect(0, 0, 0, 0);
+          h = chunk.rect().height() * factor;
+          x = rect.x();
+          y = rect.y() + rect.height() - h;
+          w = chunk.rect().width();
+          return d3_treemap_rect(x, y, w, h);
+
         default:
           throw("Invalid phrase");
       }
@@ -91,26 +176,50 @@
 
     function reduce(chunkRect, itemRect) {
       switch(phrase) {
+        case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT: // Fall through
         case d3.layout.phrase.TOP_LEFT_TO_RIGHT:
           return chunkRect
             .x(chunkRect.x() + itemRect.width())
             .width(chunkRect.width() - itemRect.width());
-        case d3.layout.phrase.LEFT_TOP_TO_BOTTOM:
-        case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:
-        case d3.layout.phrase.LEFT_LEFT_TO_RIGHT:
-        case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:
-        case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
+
+        case d3.layout.phrase.LEFT_TOP_TO_BOTTOM:  // Fall through
         case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
+          return chunkRect
+            .y(chunkRect.y() + itemRect.height())
+            .height(chunkRect.height() - itemRect.height());
+
+        case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:  // Fall through
+        case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
+          return chunkRect
+            .y(chunkRect.y() + itemRect.height())
+            .height(chunkRect.height() - itemRect.height());
+
+        case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:  // Fall through
         case d3.layout.phrase.RIGHT_RIGHT_TO_LEFT:
-        case d3.layout.phrase.RIGHT_LEFT_TO_RIGHT:
-        case d3.layout.phrase.BOTTOM_LEFT_TO_RIGHT:
-        case d3.layout.phrase.BOTTOM_RIGHT_TO_LEFT:
-        case d3.layout.phrase.BOTTOM_BOTTOM_TO_TOP:
-        case d3.layout.phrase.BOTTOM_TOP_TO_BOTTOM:
+          return chunkRect
+            .width(chunkRect.width() - itemRect.width());
+
+        case d3.layout.phrase.BOTTOM_RIGHT_TO_LEFT: // Fall through
         case d3.layout.phrase.TOP_RIGHT_TO_LEFT:
+          return chunkRect
+            .width(chunkRect.width() - itemRect.width());
+
+        case d3.layout.phrase.LEFT_LEFT_TO_RIGHT:  // Fall through
+        case d3.layout.phrase.RIGHT_LEFT_TO_RIGHT:
+          return chunkRect
+            .x(chunkRect.x() + itemRect.width())
+            .width(chunkRect.width() - itemRect.width());
+
+        case d3.layout.phrase.BOTTOM_TOP_TO_BOTTOM: // Fall through
         case d3.layout.phrase.TOP_TOP_TO_BOTTOM:
+          return chunkRect
+            .y(chunkRect.y() + itemRect.height())
+            .height(chunkRect.height() - itemRect.height());
+
+        case d3.layout.phrase.BOTTOM_BOTTOM_TO_TOP: // Fall through
         case d3.layout.phrase.TOP_BOTTOM_TO_TOP:
-          return d3_treemap_rect(0, 0, 0, 0);
+          return chunkRect
+            .height(chunkRect.height() - itemRect.height());
         default:
           throw("Invalid phrase");
       }
