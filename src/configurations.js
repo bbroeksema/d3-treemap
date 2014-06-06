@@ -15,12 +15,20 @@
         allowed: [
           'LEFT_TOP_TO_BOTTOM',
           'LEFT_BOTTOM_TO_TOP',
+          'LEFT_LEFT_TO_RIGHT',
+          'LEFT_RIGHT_TO_LEFT',
           'BOTTOM_LEFT_TO_RIGHT',
           'BOTTOM_RIGHT_TO_LEFT',
+          'BOTTOM_BOTTOM_TO_TOP',
+          'BOTTOM_TOP_TO_BOTTOM',
           'RIGHT_BOTTOM_TO_TOP',
           'RIGHT_TOP_TO_BOTTOM',
+          'RIGHT_RIGHT_TO_LEFT',
+          'RIGHT_LEFT_TO_RIGHT',
           'TOP_RIGHT_TO_LEFT',
-          'TOP_LEFT_TO_RIGHT'
+          'TOP_LEFT_TO_RIGHT',
+          'TOP_TOP_TO_BOTTOM',
+          'TOP_BOTTOM_TO_TOP'
         ],
 
         make: function(initialPhrase) {
