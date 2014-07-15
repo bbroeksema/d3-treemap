@@ -130,12 +130,12 @@
 
         case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
           h = chunk.rect().height() * factor;
-          x = rect.x() - w;
-          y = rect.height() - h;
+          x = rect.x();
+          y = rect.y() + rect.height() - h;
           return d3_treemap_rect(x, y, w, h);
 
         case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
-          x = rect.x() - w;
+          x = rect.x();
           h = chunk.rect().height() * factor;
           return d3_treemap_rect(x, y, w, h);
 
@@ -198,7 +198,6 @@
         case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:  // Fall through
         case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
           return chunkRect
-            .y(chunkRect.y() + itemRect.height())
             .height(chunkRect.height() - itemRect.height());
 
         case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:  // Fall through
