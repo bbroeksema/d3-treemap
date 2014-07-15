@@ -159,7 +159,6 @@
         case d3.layout.phrase.LEFT_BOTTOM_TO_TOP:  // Fall through
         case d3.layout.phrase.RIGHT_BOTTOM_TO_TOP:
           return chunkRect
-            .y(chunkRect.y() + itemRect.height())
             .height(chunkRect.height() - itemRect.height());
 
         case d3.layout.phrase.LEFT_RIGHT_TO_LEFT:  // Fall through
