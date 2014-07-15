@@ -96,7 +96,7 @@
           return d3_treemap_rect(x, y, w, h);
 
         case d3.layout.phrase.RIGHT_TOP_TO_BOTTOM:
-          x = rect.x() - w;
+          x = rect.x();
           h = chunk.rect().height() * factor;
           return d3_treemap_rect(x, y, w, h);
 
